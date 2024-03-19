@@ -15,14 +15,6 @@ user_cooldowns = {}
 
 from g4f import client 
 
-
-response = client.images.generate(
-  model="gemini",
-  prompt="a white siamese cat",
-  ...
-)
-image_url = response.data[0].url
-
 @Client.on_message(filters.command(["openai", "ask", "anu", "anushka"]))
 async def ask_question(client, message):
     try:
