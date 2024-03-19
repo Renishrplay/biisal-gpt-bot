@@ -10,7 +10,7 @@ import asyncio
 from telegraph import upload_file
 import os
 from .fsub import get_fsub
-
+import aiohttp, g4f
 user_cooldowns = {}
 
 from g4f.client import Client as aiclient
@@ -23,7 +23,8 @@ async def ask_question(client, message):
         return await message.reply_text("Command Incomplete!\nUsage: /openai your_question")
     msg = await message.reply("⌨️Typing...")
     try:
-        ai_client = aiclient.create_async()
+        session = aiohttp.ClientSession()
+        ai_client = g4f.Client(session=session)
         response = ai_client.images.generate(
             model="gemini",
             prompt=text
@@ -31,7 +32,11 @@ async def ask_question(client, message):
         await message.reply_photo(photo=response.data[0].url)
     except Exception as e:
         await msg.edit(f'Error - <code>{e}</code>')
-        
+    finally:
+        # Close the asynchronous session when done
+        await session.close()
+
+
 @Client.on_message(filters.command("start") & filters.incoming)
 async def startcmd(client, message):
     userMention = message.from_user.mention()
