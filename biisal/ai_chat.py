@@ -13,7 +13,7 @@ from .fsub import get_fsub
 
 user_cooldowns = {}
 
-from g4f import client 
+from g4f.client import Client as aiclient
 
 @Client.on_message(filters.command(["openai", "ask", "anu", "anushka"]))
 async def ask_question(client, message):
@@ -23,7 +23,7 @@ async def ask_question(client, message):
         return await message.reply_text("Command Incomplete!\nUsage: /openai your_question")
     msg = await message.reply("⌨️Typing...")
     try:
-        ai_client = client.Client()
+        ai_client = aiclient()
         response = ai_client.images.generate(
             model="gemini",
             prompt=text
