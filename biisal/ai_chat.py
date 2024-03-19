@@ -28,7 +28,7 @@ async def ask_question(client, message):
             model="gemini",
             prompt=text
         )
-        await msg.reply_photo(photo=response)
+        await message.reply_photo(photo=response)
     except Exception as e:
         await msg.edit(f'Error - <code>{e}</code>')
         
