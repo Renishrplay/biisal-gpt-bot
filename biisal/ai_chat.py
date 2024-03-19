@@ -23,7 +23,7 @@ async def ask_question(client, message):
         return await message.reply_text("Command Incomplete!\nUsage: /openai your_question")
     msg = await message.reply("⌨️Typing...")
     try:
-        ai_client = aiclient()
+        ai_client = aiclient.create_async()
         response = ai_client.images.generate(
             model="gemini",
             prompt=text
