@@ -24,7 +24,7 @@ async def ask_question(client, message):
     msg = await message.reply("⌨️Typing...")
     try:
         session = aiohttp.ClientSession()
-        ai_client = g4f.Client(session=session)
+        ai_client = g4f.client.Client(session=session)
         response = ai_client.images.generate(
             model="gemini",
             prompt=text
