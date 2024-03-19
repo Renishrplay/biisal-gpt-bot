@@ -13,7 +13,33 @@ from .fsub import get_fsub
 
 user_cooldowns = {}
 
+from g4f import client 
 
+
+response = client.images.generate(
+  model="gemini",
+  prompt="a white siamese cat",
+  ...
+)
+image_url = response.data[0].url
+
+@Client.on_message(filters.command(["openai", "ask", "anu", "anushka"]))
+async def ask_question(client, message):
+    try:
+        text = message.text.split(" ", 1)[1]
+    except:
+        return await message.reply_text("Command Incomplete!\nUsage: /openai your_question")
+    msg = await message.reply("⌨️Typing...")
+    try:
+        ai_client = client.Client()
+        response = ai_client.images.generate(
+            model="gemini",
+            prompt=text
+        )
+        await msg.reply_photo(photo=response)
+    except Exception as e:
+        await msg.edit(f'Error - <code>{e}</code>')
+        
 @Client.on_message(filters.command("start") & filters.incoming)
 async def startcmd(client, message):
     userMention = message.from_user.mention()
