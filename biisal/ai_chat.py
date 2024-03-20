@@ -25,10 +25,14 @@ async def ask_question(client, message):
     try:
         import nest_asyncio
         nest_asyncio.apply()
+        from g4f.cookies import set_cookies
         async with aiohttp.ClientSession() as session:
             ai_client = g4f.client.Client(session=session)
             response = await ai_client.images.generate(
                 model="gemini",
+                set_cookies("chat.openai.com", {
+                   "access_token": "token value"
+                    }),
                 prompt=text
             )
             await message.reply_photo(photo=response.data[0].url)
