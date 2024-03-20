@@ -19,19 +19,19 @@ from g4f.client import Client as aiclient
 async def ask_question(client, message):
     try:
         text = message.text.split(" ", 1)[1]
-    except:
+    except IndexError:
         return await message.reply_text("Command Incomplete!\nUsage: /openai your_question")
     msg = await message.reply("⌨️Typing...")
     try:
         async with aiohttp.ClientSession() as session:
-        ai_client = g4f.client.Client(session=session)
-        response = ai_client.images.generate(
-            model="gemini",
-            prompt=text
-        )
-        await message.reply_photo(photo=response.data[0].url)
+            ai_client = g4f.client.Client(session=session)
+            response = await ai_client.images.generate(
+                model="gemini",
+                prompt=text
+            )
+            await message.reply_photo(photo=response.data[0].url)
     except Exception as e:
-        await msg.edit(f'Error - <code>{e}</code>')
+        await msg.edit(f'Error - {e}')
     finally:
         # Close the asynchronous session when done
         await session.close()
