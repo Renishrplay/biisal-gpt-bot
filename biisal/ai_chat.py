@@ -23,6 +23,8 @@ async def ask_question(client, message):
         return await message.reply_text("Command Incomplete!\nUsage: /openai your_question")
     msg = await message.reply("⌨️Typing...")
     try:
+        import nest_asyncio
+        nest_asyncio.apply()
         async with aiohttp.ClientSession() as session:
             ai_client = g4f.client.Client(session=session)
             response = await ai_client.images.generate(
