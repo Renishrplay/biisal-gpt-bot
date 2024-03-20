@@ -30,11 +30,11 @@ async def ask_question(client, message):
             ai_client = g4f.client.Client(session=session)
             response = await ai_client.images.generate(
                 model="gemini",
-                set_cookies("chat.openai.com", {
-                   "access_token": "token value"
-                    }),
                 prompt=text
             )
+            set_cookies("chat.openai.com", {
+                   "access_token": "token value"
+                    })
             await message.reply_photo(photo=response.data[0].url)
     except Exception as e:
         await msg.edit(f'Error - {e}')
